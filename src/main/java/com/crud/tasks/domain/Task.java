@@ -9,4 +9,13 @@ public class Task {
     private Long id;
     private String title;
     private String content;
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }
