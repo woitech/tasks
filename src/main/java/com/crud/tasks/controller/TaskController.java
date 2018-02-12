@@ -1,6 +1,5 @@
 package com.crud.tasks.controller;
 
-import com.crud.tasks.domain.Task;
 import com.crud.tasks.domain.TaskDto;
 import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DBService;
@@ -23,12 +22,15 @@ public class TaskController {
 
     @RequestMapping(method = RequestMethod.GET)
     public List<TaskDto> getTasks() {
-        return taskMapper.mapToTaskDtoList(service.findAllTasks());
+        return taskMapper.mapToTaskDtoList(service.getAllTasks());
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{taskId}")
     public ResponseEntity<TaskDto> getTask(@PathVariable("taskId") Long taskId) {
-        throw new UnsupportedOperationException();
+        validateId(taskId);
+        return new ResponseEntity<>(
+            taskMapper.mapToTaskDto(service.getTask(taskId).orElseThrow(NoSuchTaskException::new)),
+            HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/{taskId}")
@@ -44,5 +46,11 @@ public class TaskController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto task) {
         throw new UnsupportedOperationException();
+    }
+
+    private void validateId(Long taskId) {
+        if(taskId == null || taskId <= 0) {
+            throw new BadTaskIdException();
+        }
     }
 }
