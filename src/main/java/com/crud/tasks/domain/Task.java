@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Getter
 @AllArgsConstructor
@@ -15,9 +16,11 @@ public class Task {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Size(max = 20)
     @Column(name = "name")
     private String title;
 
+    @Size(max = 150)
     @Column(name = "description")
     private String content;
 
