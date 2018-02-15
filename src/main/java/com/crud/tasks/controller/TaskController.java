@@ -5,6 +5,7 @@ import com.crud.tasks.mapper.TaskMapper;
 import com.crud.tasks.service.DBService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
@@ -12,6 +13,7 @@ import java.util.*;
 import static com.crud.tasks.controller.InvalidTaskException.InvalidTaskReason.*;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/v1/tasks")
 public class TaskController {
     @Autowired
@@ -20,8 +22,7 @@ public class TaskController {
     @Autowired
     private TaskMapper taskMapper;
 
-    // alias '/all' is consistent with convention applied to deleteAllTasks()
-    @RequestMapping(method = RequestMethod.GET, value = {"", "/all"})
+    @RequestMapping(method = RequestMethod.GET)
     public List<TaskDto> getTasks() {
         return taskMapper.mapToTaskDtoList(service.getAllTasks());
     }
@@ -41,9 +42,9 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    // supplementary '/all' is for security reason
-    @RequestMapping(method = RequestMethod.DELETE, value = "/all")
-    public ResponseEntity<TaskDto> deleteAllTasks() {
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity<TaskDto> deleteAllTasks(@RequestHeader HttpHeaders headers) {
+        checkDelConfirm(headers);
         service.deleteAllTasks();
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -101,6 +102,13 @@ public class TaskController {
         String title = task.getTitle();
         if(title == null || title.isEmpty() || title.length() > 20) {
             throw new InvalidTaskException(ILLEGAL_TITLE);
+        }
+    }
+    
+    private void checkDelConfirm(HttpHeaders headers) {
+        List<String> header = headers.get("confirm-delete-all");
+        if (header == null || header.size() == 0 || !"true".equals(header.get(0))) {
+            throw new UnconfirmedDeletionException();
         }
     }
 }
