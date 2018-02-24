@@ -1,23 +1,16 @@
 call gradlew build
-if "%ERRORLEVEL%" == "0" goto rename
-echo.
-echo GRADLEW BUILD has errors - breaking work
-goto fail
-
-:rename
-del build\libs\crud.war
-ren build\libs\tasks-0.0.1-SNAPSHOT.war crud.war
 if "%ERRORLEVEL%" == "0" goto stoptomcat
-echo Cannot rename file
+echo.
+echo %~n0%~x0: GRADLEW BUILD has errors - breaking work
 goto fail
 
 :stoptomcat
-call %CATALINA_HOME%\bin\shutdown.bat
+call %CATALINA_HOME%\bin\shutdown.bat 
 
 :copyfile
-copy build\libs\crud.war %CATALINA_HOME%\webapps
+copy /Y build\libs\tasks-0.0.1-SNAPSHOT.war %CATALINA_HOME%\webapps\crud.war
 if "%ERRORLEVEL%" == "0" goto runtomcat
-echo Cannot copy file
+echo %~n0%~x0: cannot copy war file
 goto fail
 
 :runtomcat
@@ -26,8 +19,8 @@ goto end
 
 :fail
 echo.
-echo There were errors
+echo %~n0%~x0: there were errors
 
 :end
 echo.
-echo Work is finished.
+echo %~n0%~x0: work is finished.
