@@ -27,3 +27,4 @@ nbdist/
 ### Other ###
 /drafts/
 /out/
+DraftsTests.java
