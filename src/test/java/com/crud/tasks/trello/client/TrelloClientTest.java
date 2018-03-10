@@ -10,11 +10,13 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -31,6 +33,8 @@ public class TrelloClientTest {
     @Mock
     private TrelloConfig trelloConfig;
 
+    private static final String ALL_BOARDS_URI = "http://test.com/boards?key=test&token=test&fields=name,id&lists=all";
+
     @Before
     public void init() {
         when(trelloConfig.getTrelloApiEndpoint()).thenReturn("http://test.com");
@@ -45,7 +49,7 @@ public class TrelloClientTest {
         // Given
         TrelloBoardDto[] trelloBoards = new TrelloBoardDto[1];
         trelloBoards[0] = new TrelloBoardDto("test_board", "test_id", new ArrayList<>());
-        URI uri = new URI("http://test.com/boards?key=test&token=test&fields=name,id&lists=all");
+        URI uri = new URI(ALL_BOARDS_URI);
         when(restTemplate.getForObject(uri, TrelloBoardDto[].class)).thenReturn(trelloBoards);
 
         // When
@@ -74,5 +78,31 @@ public class TrelloClientTest {
         assertEquals("1", newCard.getId());
         assertEquals("Test task", newCard.getName());
         assertEquals("http://test.com", newCard.getShortUrl());
+    }
+
+    @Test
+    public void shouldReturnEmptyListWhenNull() throws URISyntaxException {
+        // Given
+        URI uri = new URI(ALL_BOARDS_URI);
+        when(restTemplate.getForObject(uri, TrelloBoardDto[].class)).thenReturn(null);
+
+        // When
+        List<TrelloBoardDto> boards =  trelloClient.getTrelloBoards();
+
+        // Then
+        assertEquals(Collections.emptyList(), boards);
+    }
+
+    @Test
+    public void shouldReturnEmptyListWhenRCException() throws URISyntaxException {
+        // Given
+        URI uri = new URI(ALL_BOARDS_URI);
+        when(restTemplate.getForObject(uri, TrelloBoardDto[].class)).thenThrow(new RestClientException("Test message"));
+
+        // When
+        List<TrelloBoardDto> boards =  trelloClient.getTrelloBoards();
+
+        // Then
+        assertEquals(Collections.emptyList(), boards);
     }
 }
