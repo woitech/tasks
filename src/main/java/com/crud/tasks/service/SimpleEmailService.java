@@ -9,6 +9,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import static java.util.Optional.ofNullable;
+
 @Service
 public class SimpleEmailService {
     private static final Logger LOGGER = LoggerFactory.getLogger(SimpleMailMessage.class);
@@ -31,6 +33,7 @@ public class SimpleEmailService {
         mailMessage.setTo(mail.getReceiverEmail());
         mailMessage.setSubject(mail.getSubject());
         mailMessage.setText(mail.getMessage());
+        ofNullable(mail.getToCc()).ifPresent(mailMessage::setCc);
         return mailMessage;
     }
 }
