@@ -26,4 +26,7 @@ public interface TaskRepository extends CrudRepository<Task, Long> {
 
     @Override
     void deleteAll();
+
+    @Override
+    long count();
 }
