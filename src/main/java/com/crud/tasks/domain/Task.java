@@ -1,8 +1,6 @@
 package com.crud.tasks.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -10,6 +8,8 @@ import javax.validation.constraints.Size;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode
+@ToString
 @Entity(name = "tasks")
 public class Task {
     @Id
@@ -23,13 +23,4 @@ public class Task {
     @Size(max = 150)
     @Column(name = "description")
     private String content;
-
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                '}';
-    }
 }

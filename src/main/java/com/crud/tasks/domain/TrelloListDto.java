@@ -3,11 +3,15 @@ package com.crud.tasks.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
 @AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class TrelloListDto {
     @JsonProperty("id")
     private String id;
