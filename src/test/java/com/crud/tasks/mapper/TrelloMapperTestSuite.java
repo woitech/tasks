@@ -1,6 +1,7 @@
 package com.crud.tasks.mapper;
 
 import com.crud.tasks.domain.*;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,8 +21,6 @@ import static org.junit.Assert.assertNull;
 // type.string.equals(typeDto.string) including null values,
 // (type)null <-> (typDto)null,
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
 public class TrelloMapperTestSuite {
     private static final List<TrelloListDto> EMPTY_LIST_TRELLO_LIST_DTO = Collections.emptyList();
     private static final List<TrelloList> EMPTY_LIST_TRELLO_LIST = Collections.emptyList();
@@ -33,8 +32,12 @@ public class TrelloMapperTestSuite {
     private static List<TrelloBoardDto> trelloBoardDtoList;
     private static List<TrelloBoard> trelloBoardList;
 
-    @Autowired
     private TrelloMapper trelloMapper;
+
+    @Before
+    public void init() {
+        trelloMapper = new TrelloMapper();
+    }
 
     @BeforeClass
     public static void prepareTrelloListsMappedPairs() {
