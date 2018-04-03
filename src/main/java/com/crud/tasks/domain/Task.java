@@ -9,7 +9,6 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
-@ToString
 @Entity(name = "tasks")
 public class Task {
     @Id

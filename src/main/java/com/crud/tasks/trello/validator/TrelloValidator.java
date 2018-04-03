@@ -24,6 +24,9 @@ public class TrelloValidator {
     }
 
     public void validateCard(final TrelloCard trelloCard) {
+        if (trelloCard == null) {
+            throw new IllegalArgumentException();
+        }
         if (trelloCard.getName().equalsIgnoreCase("test")) {
             LOGGER.info("Someone is testing my application!");
         } else {

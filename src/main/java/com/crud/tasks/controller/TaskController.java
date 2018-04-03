@@ -104,7 +104,7 @@ public class TaskController {
             throw new InvalidTaskException(ILLEGAL_TITLE);
         }
     }
-    
+
     private void checkDelConfirm(HttpHeaders headers) {
         List<String> header = headers.get("confirm-delete-all");
         if (header == null || header.size() == 0 || !"true".equals(header.get(0))) {

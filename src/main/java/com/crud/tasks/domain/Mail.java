@@ -4,6 +4,7 @@ import lombok.*;
 
 @RequiredArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 @Getter
 public class Mail {
     @NonNull
