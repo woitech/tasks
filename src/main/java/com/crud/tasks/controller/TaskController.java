@@ -31,8 +31,8 @@ public class TaskController {
     public ResponseEntity<TaskDto> getTask(@PathVariable("taskId") Long taskId) {
         validateLegalId(taskId);
         return new ResponseEntity<>(
-            taskMapper.mapToTaskDto(service.getTask(taskId).orElseThrow(NoSuchTaskException::new)),
-            HttpStatus.OK);
+                taskMapper.mapToTaskDto(service.getTask(taskId).orElseThrow(NoSuchTaskException::new)),
+                HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.DELETE, value = "/tasks/{taskId}")
@@ -62,8 +62,8 @@ public class TaskController {
     public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto task) {
         validateNew(task);
         return new ResponseEntity<>(
-            taskMapper.mapToTaskDto(service.saveTask(taskMapper.mapToTask(task))),
-            HttpStatus.CREATED);
+                taskMapper.mapToTaskDto(service.saveTask(taskMapper.mapToTask(task))),
+                HttpStatus.CREATED);
     }
 
     // todo: constraints (string length fo example) should be in common config file and set in @Column annotation

@@ -66,7 +66,7 @@ public class TrelloServiceTest {
         assertEquals("test_name", result.getName());
         assertEquals("https://example.com/cards", result.getShortUrl());
 
-        Mail mail = new Mail("admin@test.com", "Tasks: New Trello card",
+        Mail mail = new Mail(MailMessageType.NEW_CARD_MESSAGE, "admin@test.com", "Tasks: New Trello card",
                 "New card \"test_name\" has been created on your Trello account");
 
         verify(emailService, times(1)).send(eq(mail));

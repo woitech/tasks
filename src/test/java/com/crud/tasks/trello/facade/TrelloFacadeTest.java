@@ -4,10 +4,12 @@ import com.crud.tasks.domain.*;
 import com.crud.tasks.mapper.TrelloMapper;
 import com.crud.tasks.service.TrelloService;
 import com.crud.tasks.trello.validator.TrelloValidator;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -31,6 +33,13 @@ public class TrelloFacadeTest {
 
     @Mock
     private TrelloMapper trelloMapper;
+
+    @After
+    public void mockReset() {
+        Mockito.reset(trelloService);
+        Mockito.reset(trelloValidator);
+        Mockito.reset(trelloMapper);
+    }
 
     @Test
     public void shouldFetchEmptyList() {
@@ -75,7 +84,7 @@ public class TrelloFacadeTest {
         when(trelloValidator.validateTrelloBoards(mappedTrelloBoards)).thenReturn(mappedTrelloBoards);
 
         // When
-        List<TrelloBoardDto> trelloBoardDtos =trelloFacade.fetchTrelloBoards();
+        List<TrelloBoardDto> trelloBoardDtos = trelloFacade.fetchTrelloBoards();
 
         // Then
         assertNotNull(trelloBoardDtos);

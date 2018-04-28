@@ -1,5 +1,6 @@
 package com.crud.tasks.domain;
 
+import com.crud.tasks.service.MailMessageType;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -8,10 +9,11 @@ public class MailTest {
     @Test
     public void testGettersAfterAllArgsConstructor(){
         // Given
-        Mail mail1 = new Mail("test_email", "test_subject", "test_message", "toCC");
-        Mail mail2 = new Mail("test_email", "test_subject", "test_message", null);
+        Mail mail1 = new Mail(MailMessageType.SIMPLE_MESSAGE, "test_email", "test_subject", "test_message", "toCC");
+        Mail mail2 = new Mail(MailMessageType.SIMPLE_MESSAGE, "test_email", "test_subject", "test_message", null);
 
         // When and Then
+        assertEquals(MailMessageType.SIMPLE_MESSAGE, mail1.getMessageType());
         assertEquals("test_email", mail1.getReceiverEmail());
         assertEquals("test_subject", mail1.getSubject());
         assertEquals("test_message", mail1.getMessage());
@@ -24,9 +26,10 @@ public class MailTest {
     @Test
     public void testGettersAfterRequiredArgsConstructor(){
         // Given
-        Mail mail = new Mail("test_email", "test_subject", "test_message");
+        Mail mail = new Mail(MailMessageType.SIMPLE_MESSAGE, "test_email", "test_subject", "test_message");
 
         // When and Then
+        assertEquals(MailMessageType.SIMPLE_MESSAGE, mail.getMessageType());
         assertEquals("test_email", mail.getReceiverEmail());
         assertEquals("test_subject", mail.getSubject());
         assertEquals("test_message", mail.getMessage());
@@ -36,14 +39,14 @@ public class MailTest {
     @Test
     public void testEquals() {
         // Given
-        Mail mail1a = new Mail("test_email", "test_subject", "test_message", "toCC");
-        Mail mail1b = new Mail("test_email", "test_subject", "test_message", "toCC");
-        Mail mail2a  = new Mail("test_email", "test_subject", "test_message");
-        Mail mail2b = new Mail("test_email", "test_subject", "test_message");
-        Mail mailDiff1 = new Mail("test_email_diff", "test_subject", "test_message", "toCC");
-        Mail mailDiff2 = new Mail("test_email", "test_subject_diff", "test_message", "toCC");
-        Mail mailDiff3 = new Mail("test_email", "test_subject", "test_message_diff", "toCC");
-        Mail mailDiff4  = new Mail("test_email", "test_subject", "test_message", "toCC_diff");
+        Mail mail1a = new Mail(MailMessageType.SIMPLE_MESSAGE, "test_email", "test_subject", "test_message", "toCC");
+        Mail mail1b = new Mail(MailMessageType.SIMPLE_MESSAGE, "test_email", "test_subject", "test_message", "toCC");
+        Mail mail2a  = new Mail(MailMessageType.SIMPLE_MESSAGE, "test_email", "test_subject", "test_message");
+        Mail mail2b = new Mail(MailMessageType.SIMPLE_MESSAGE, "test_email", "test_subject", "test_message");
+        Mail mailDiff1 = new Mail(MailMessageType.SIMPLE_MESSAGE, "test_email_diff", "test_subject", "test_message", "toCC");
+        Mail mailDiff2 = new Mail(MailMessageType.SIMPLE_MESSAGE, "test_email", "test_subject_diff", "test_message", "toCC");
+        Mail mailDiff3 = new Mail(MailMessageType.SIMPLE_MESSAGE, "test_email", "test_subject", "test_message_diff", "toCC");
+        Mail mailDiff4  = new Mail(MailMessageType.SIMPLE_MESSAGE, "test_email", "test_subject", "test_message", "toCC_diff");
 
        // When and Then
         assertTrue(mail1a.equals(mail1a));
@@ -63,10 +66,10 @@ public class MailTest {
     @Test
     public void testHashCode() {
         // Given
-        Mail mail1a = new Mail("test_email", "test_subject", "test_message", "toCC");
-        Mail mail1b = new Mail("test_email", "test_subject", "test_message", "toCC");
-        Mail mail2a  = new Mail("test_email", "test_subject", "test_message");
-        Mail mail2b = new Mail("test_email", "test_subject", "test_message");
+        Mail mail1a = new Mail(MailMessageType.SIMPLE_MESSAGE, "test_email", "test_subject", "test_message", "toCC");
+        Mail mail1b = new Mail(MailMessageType.SIMPLE_MESSAGE, "test_email", "test_subject", "test_message", "toCC");
+        Mail mail2a  = new Mail(MailMessageType.SIMPLE_MESSAGE, "test_email", "test_subject", "test_message");
+        Mail mail2b = new Mail(MailMessageType.SIMPLE_MESSAGE, "test_email", "test_subject", "test_message");
 
         // When and Then
         assertTrue(mail1a.hashCode() == mail1b.hashCode());
