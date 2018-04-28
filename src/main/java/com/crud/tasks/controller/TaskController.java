@@ -14,7 +14,7 @@ import static com.crud.tasks.controller.InvalidTaskException.InvalidTaskReason.*
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/v1/tasks")
+@RequestMapping("/v1")
 public class TaskController {
     @Autowired
     private DBService service;
@@ -22,12 +22,12 @@ public class TaskController {
     @Autowired
     private TaskMapper taskMapper;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET, value = "/tasks")
     public List<TaskDto> getTasks() {
         return taskMapper.mapToTaskDtoList(service.getAllTasks());
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{taskId}")
+    @RequestMapping(method = RequestMethod.GET, value = "/tasks/{taskId}")
     public ResponseEntity<TaskDto> getTask(@PathVariable("taskId") Long taskId) {
         validateLegalId(taskId);
         return new ResponseEntity<>(
@@ -35,14 +35,14 @@ public class TaskController {
             HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{taskId}")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/tasks/{taskId}")
     public ResponseEntity<TaskDto> deleteTask(@PathVariable("taskId") Long taskId) {
         validateExistingId(taskId);
         service.deleteTask(taskId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(method = RequestMethod.DELETE)
+    @RequestMapping(method = RequestMethod.DELETE, value = "/tasks")
     public ResponseEntity<TaskDto> deleteAllTasks(@RequestHeader HttpHeaders headers) {
         checkDelConfirm(headers);
         service.deleteAllTasks();
@@ -50,7 +50,7 @@ public class TaskController {
     }
 
     // todo: avoid task creation after deletion in the case of concurrent access
-    @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
+    @RequestMapping(method = RequestMethod.PUT,  value = "/tasks", consumes = "application/json")
     public ResponseEntity<TaskDto> updateTask(@RequestBody TaskDto task) {
         validateExisting(task);
         return new ResponseEntity<>(
@@ -58,7 +58,7 @@ public class TaskController {
                 HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(method = RequestMethod.POST,  value = "/tasks", consumes = "application/json")
     public ResponseEntity<TaskDto> createTask(@RequestBody TaskDto task) {
         validateNew(task);
         return new ResponseEntity<>(
