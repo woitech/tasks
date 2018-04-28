@@ -90,15 +90,15 @@
     </style>
 </head>
 <body class=""
-      style="background-color: #f6f6f6; font-family: sans-serif; -webkit-fontsmoothing: antialiased; font-size: 14px;
-      line-height: 1.4; margin: 0; padding: 0; -mstext-size-adjust: 100%; -webkit-text-size-adjust: 100%;">
+      style="background-color: #f6f6f6; font-family: sans-serif; -webkit-font-smoothing: antialiased; font-size: 14px;
+      line-height: 1.4; margin: 0; padding: 0; -ms-text-size-adjust: 100%; -webkit-text-size-adjust: 100%;">
 <table border="0" cellpadding="0" cellspacing="0" class="body"
-       style="bordercollapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;
+       style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt; width: 100%;
        background-color: #f6f6f6;">
     <tr>
         <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;"></td>
         <td class="container"
-            style="font-family: sans-serif; font-size: 14px; verticalalign: top; display: block; Margin: 0 auto;
+            style="font-family: sans-serif; font-size: 14px; vertical-align: top; display: block; Margin: 0 auto;
             max-width: 580px; padding: 10px; width: 580px;">
             <div class="content"
                  style="box-sizing: border-box; display: block; Margin: 0 auto; max-width: 580px; padding: 10px;">
@@ -115,14 +115,16 @@
                             style="font-family: sans-serif; font-size: 14px; vertical-align: top; box-sizing: border-box;
                             padding: 20px;">
                             <table border="0" cellpadding="0" cellspacing="0"
-                                   style="bordercollapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt;
+                                   style="border-collapse: separate; mso-table-lspace: 0pt; mso-table-rspace: 0pt;
                                    width: 100%;">
                                 <tr>
                                     <td style="font-family: sans-serif; font-size: 14px; vertical-align: top;">
-                                        <p th:if="${is_friend}" style="font-family: sans-serif; font-size: 14px; font-weight: normal;
-                                        margin: 0; margin-bottom: 15px;"> Yo <span th:text="${admin_name}"></span>,</p>
-                                        <p th:unless="${is_friend}" style="font-family: sans-serif; font-size: 14px; font-weight: normal;
-                                        margin: 0; margin-bottom: 15px;"> Dear <span th:text="admin_config.getAdminName()"></span>,</p>
+                                        <p th:if="${msgType == msgType.NEW_CARD_MESSAGE}" style="font-family: sans-serif;
+                                           font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">
+                                            Dear <span th:text="${adminConfig.adminName}"></span>,</p>
+                                        <p th:if="${msgType == msgType.SCHEDULER_INFO_MESSAGE}" style="font-family: sans-serif;
+                                           font-size: 14px; font-weight: normal; margin: 0; margin-bottom: 15px;">
+                                            Attention! new report.</p>
                                         <p style="font-family: sans-serif; font-size: 14px; font-weight: normal;
                                            margin: 0; margin-bottom: 15px;" th:text="${message}"></p>
                                         <table border="0" cellpadding="0" cellspacing="0" class="btn btnprimary"
@@ -133,7 +135,7 @@
                                                 <td align="left"
                                                     style="font-family: sans-serif; font-size: 14px; vertical-align: top;
                                                     padding-bottom: 15px;">
-                                                    <table th:if="${show_button}" border="0" cellpadding="0" cellspacing="0"
+                                                    <table border="0" cellpadding="0" cellspacing="0"
                                                            style="border-collapse: separate; mso-table-lspace: 0pt;
                                                            mso-table-rspace: 0pt; width: auto">
                                                         <tbody>
@@ -141,12 +143,12 @@
                                                             <td style="font-family: sans-serif; font-size: 14px;
                                                                 vertical-align: top; background-color: #3498db;
                                                                 border-radius: 5px; text-align: center;">
-                                                                <a th:href="${task_url}" th:text="${button}" target="_blank"
+                                                                <a th:href="${taskUrl}" th:text="${button}" target="_blank"
                                                                    style="display: inline-block; color: #ffffff;
                                                                    background-color: #3498db; border: solid 1px #3498db;
                                                                    border-radius: 5px; box-sizing: border-box; cursor:
                                                                    pointer; text-decoration: none; font-size: 14px;
-                                                                   fontweight: bold; margin: 0; padding: 12px 25px;
+                                                                   font-weight: bold; margin: 0; padding: 12px 25px;
                                                                    text-transform: capitalize; border-color: #3498db;"></a>
                                                             </td>
                                                         </tr>
@@ -156,13 +158,15 @@
                                             </tr>
                                             </tbody>
                                         </table>
-                                        <p style="font-family: sans-serif; font-size: 14px; font-weight:
-                                           normal; margin: 0; margin-bottom: 15px;">Application functionality:</p>
-                                                <ul th:each="function : ${application_functionality}">
-                                                    <li th:text="${function}"></li>
-                                                </ul>
-                                        <p style="font-family: sans-serif; font-size: 14px; font-weight: normal;
-                                           margin: 0; Margin-bottom: 15px;">Goodbye <span th:text="${admin_name}"></span>!</p>
+                                        <div th:unless="${msgType == msgType.SCHEDULER_INFO_MESSAGE}">
+                                            <p style="font-family: sans-serif; font-size: 14px; font-weight: normal;
+                                               margin: 0; margin-bottom: 15px;">Application functionality:</p>
+                                            <ul th:each="function : ${applicationFunctionality}">
+                                                <li th:text="${function}"></li>
+                                            </ul>
+                                            <p style="font-family: sans-serif; font-size: 14px; font-weight: normal;
+                                               margin: 0; Margin-bottom: 15px;">Goodbye <span th:text="${adminConfig.adminName}"></span>!</p>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
@@ -179,11 +183,11 @@
                                 style="font-family: sans-serif; vertical-align: top; padding-bottom: 10px;
                                 padding-top: 10px; font-size: 12px; color: #999999; text-align: center;">
                                 <span class="apple-link" style="color: #999999; font-size: 12px; text-align: center;">
-                                    <span th:text="${company_name}"></span><br/>
-                                    email: <a th:href="|mailto:${company_email}|">
-                                               <span th:text="${company_email}"></span>
+                                    <span th:text="${companyData.companyName}"></span><br/>
+                                    email: <a th:href="|mailto:${companyData.companyEmail}|">
+                                               <span th:text="${companyData.companyEmail}"></span>
                                            </a><br/>
-                                    ph: <span th:text="${company_phone}"></span>
+                                    ph: <span th:text="${companyData.companyPhone}"></span>
                                 </span>
                             </td>
                         </tr>

@@ -21,12 +21,20 @@ public class SimpleEmailService {
     private JavaMailSender javaMailSender;
 
     @Autowired
-    private MailCreatorService mailCreatorService;
+    private MailMessageCreatorService messageCreatorService;
 
     public void send(final Mail mail) {
         LOGGER.info("Starting e-mail preperation...");
         try {
-            javaMailSender.send(createMimeMessage(mail));
+            switch(mail.getMessageType()){
+                case NEW_CARD_MESSAGE:
+                case SCHEDULER_INFO_MESSAGE:
+                    javaMailSender.send(createMimeMessage(mail));
+                    break;
+                case SIMPLE_MESSAGE:
+                default:
+                    javaMailSender.send(createMailMessage(mail));
+            }
             LOGGER.info("Email has been sent.");
         } catch (MailException e) {
             LOGGER.error("Failed to process email sending: ", e.getMessage(), e);
@@ -37,7 +45,7 @@ public class SimpleEmailService {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(mail.getReceiverEmail());
         mailMessage.setSubject(mail.getSubject());
-        mailMessage.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()));
+        mailMessage.setText(mail.getMessage());
         ofNullable(mail.getToCc()).ifPresent(mailMessage::setCc);
         return mailMessage;
     }
@@ -47,7 +55,9 @@ public class SimpleEmailService {
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
             messageHelper.setTo(mail.getReceiverEmail());
             messageHelper.setSubject(mail.getSubject());
-            messageHelper.setText(mailCreatorService.buildTrelloCardEmail(mail.getMessage()), true);
+            messageHelper.setText(messageCreatorService.buildMessage(mail.getMessageType(), mail.getMessage()), true);
         };
     }
+
+
 }

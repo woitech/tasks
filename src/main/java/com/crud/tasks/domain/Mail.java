@@ -1,5 +1,6 @@
 package com.crud.tasks.domain;
 
+import com.crud.tasks.service.MailMessageType;
 import lombok.*;
 
 @RequiredArgsConstructor
@@ -7,6 +8,9 @@ import lombok.*;
 @EqualsAndHashCode
 @Getter
 public class Mail {
+    @NonNull
+    private MailMessageType messageType;
+
     @NonNull
     private String receiverEmail;
 
