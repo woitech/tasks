@@ -1,3 +1,5 @@
+gradle.startParameter.showStacktrace = org.gradle.api.logging.configuration.ShowStacktrace.ALWAYS
+gradle.startParameter.logLevel = LogLevel.DEBUG
 buildscript {
 	ext {
 		springBootVersion = '2.0.0.BUILD-SNAPSHOT'
@@ -19,7 +21,7 @@ apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 //apply plugin: 'war'
-apply plugin: "com.gorylenko.gradle-git-properties"
+//apply plugin: "com.gorylenko.gradle-git-properties"
 
 group = 'com.crud'
 version = '0.0.1-SNAPSHOT'
@@ -49,8 +51,8 @@ dependencies {
 	compile('io.springfox:springfox-swagger-ui:2.8.0')
 
 	// database driver
-	compile('mysql:mysql-connector-java')
-    //compile('org.postgresql:postgresql')
+	//compile('mysql:mysql-connector-java')
+    compile('org.postgresql:postgresql')
 	
     testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.powermock:powermock-module-junit4:2.0.0-beta.5')
